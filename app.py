@@ -23,33 +23,20 @@ cities = ['Hyderabad', 'Bangalore', 'Mumbai', 'Indore', 'Kolkata', 'Delhi',
 
 method = ['KNN', 'Random Forest', 'Linear_Regression']
 
-selected_method = st.selectbox('Select Algorithm', sorted(method))
-
-if selected_method == 'KNN':
-    pipe = pickle.load(open('knn.pkl', 'rb'))
-elif selected_method == 'Random Forest':
-    pipe = pickle.load(open('random_forest.pkl', 'rb'))
-elif selected_method == 'Linear_Regression':
-    pipe = pickle.load(open('logistic_regression.pkl', 'rb'))
+pipe = pickle.load(open('logistic_regression.pkl', 'rb'))
 
 st.title('IPL Win Predictor')
-
-def generate_default_values():
-    return teams[0], teams[1], cities[0], 200, 150, 15, 5
-
-# Default values
-batting_team, bowling_team, selected_city, target, score, overs, wickets = generate_default_values()
 
 col1, col2 = st.columns(2)
 
 with col1:
     batting_team = st.selectbox('Select the batting team', sorted(teams), index=0)
 with col2:
-    bowling_team = st.selectbox('Select the bowling team', sorted(teams), index=1)
+    bowling_team = st.selectbox('Select the bowling team', sorted(teams), index=5)
 
-selected_city = st.selectbox('Select host city', sorted(cities), index=0)
+selected_city = st.selectbox('Select host city', sorted(cities), index=14)
 
-target = st.number_input('Target', value=200)
+target = st.number_input('Target', value=240)
 
 col3, col4, col5 = st.columns(3)
 
