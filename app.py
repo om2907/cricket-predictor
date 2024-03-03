@@ -37,6 +37,8 @@ team_colors = {
 }
 
 ball = [0,1,2,3,4,5]
+filtered_ball = [1,2,3,4,5]
+def_ball = 0
 
 
 pipe = pickle.load(open('logistic_regression.pkl', 'rb'))
@@ -52,84 +54,120 @@ with col2:
 
 selected_city = st.selectbox('Select host city', sorted(cities), index=14)
 
-target = st.number_input('Target', value=240)
+col1, col2 = st.columns(2)
 
-col3, col4, col5, col6 = st.columns(4)
+with col1 :
+    target = st.number_input('Target', value=1,min_value=1)
 
-with col3:
-    score = st.number_input('Score', value=150)
+with col2:
+    score = st.number_input('Current Score', value=0,min_value=0,max_value = target-1)
+
+col4, col5, col6 = st.columns(3)
+
 with col4:
-    overs = st.number_input('Overs completed', value=15,max_value=20, step=1)
+    overs = st.number_input('Overs completed', value=0,max_value=20, step=1,min_value=0)
 
 
 if(overs==20):
 
     with col5:
-        balls = st.selectbox('Balls bowled',sorted(ball), disabled=True)
+        balls = st.selectbox('Maximum overs are bowled',sorted(ball), disabled=True)
+
+elif(overs==0):
+    with col5:
+        balls = st.selectbox('Balls bowled in current over',sorted(filtered_ball), index=ball.index(def_ball))
 else:
-    with  col5:
-        balls = st.selectbox('Balls bowled',sorted(ball))
+    with col5:
+        balls = st.selectbox('Balls bowled in current over',sorted(ball))
 with col6:
-    wickets = st.number_input('Wickets out', max_value=10, value=5)
+    wickets = st.number_input('Wickets out', max_value=10, value=0,min_value=0)
 
 
     
 
+#button = st.button('Predict Probability')
 
 
 
-if st.button('Predict Probability'):
-    runs_left = target - score
-    balls_left = 121 - ((overs*6) + (balls))
-    wickets_left = 10 - wickets
-    crr = score/overs
-    rrr = (runs_left*6)/balls_left
-    print(120 - balls_left +1)
-    input_df = pd.DataFrame({'Batting_Team': [batting_team], 'Bowling_Team': [bowling_team], 'City': [selected_city],
-                             'runs_left': [runs_left], 'balls_left': [balls_left], 'wickets_left': [wickets_left],
-                             'Total_Runs_x': [target], 'crr': [crr], 'rrr': [rrr]})
-
-    result = pipe.predict_proba(input_df)
-    loss = result[0][0]
-    win = result[0][1]
     
+def ipl_win_predictor():    
+        runs_left = target - score
+        balls_left = 121 - ((overs*6) + (balls))
+        wickets_left = 10 - wickets
+        crr = score/(overs + balls)
+        rrr = (runs_left*6)/(balls_left-1)
+        print(120 - balls_left +1)
+        input_df = pd.DataFrame({'Batting_Team': [batting_team], 'Bowling_Team': [bowling_team], 'City': [selected_city],
+                                'runs_left': [runs_left], 'balls_left': [balls_left], 'wickets_left': [wickets_left],
+                                'Total_Runs_x': [target], 'crr': [crr], 'rrr': [rrr]})
+
+        result = pipe.predict_proba(input_df)
+        loss = result[0][0]
+        win = result[0][1]
+        
 
 
 
 
 
 
-    if(wickets >= 10 or balls_left==1):
-        win_chart=0
-    else:
-        win_chart= round(win*100)
-    loss_chart= round(loss*100)
-    #st.header(batting_team + "- " + str(round(win*100)) + "%")
-    #st.header(bowling_team + "- " + str(round(loss*100)) + "%")
+        if(wickets >= 10 or balls_left==1 or rrr>36):
+            win_chart=0
+        else:
+            win_chart= round(win*100)
+        loss_chart= round(loss*100)
+        #st.header(batting_team + "- " + str(round(win*100)) + "%")
+        #st.header(bowling_team + "- " + str(round(loss*100)) + "%")
 
 
-    import plotly.graph_objects as go
+        import plotly.graph_objects as go
 
-        # Data to plot
-    labels = [batting_team, bowling_team]
-    values = [win_chart, loss_chart]
+            # Data to plot
+        labels = [batting_team, bowling_team]
+        values = [win_chart, loss_chart]
 
-    colors = [team_colors.get(batting_team, 'gray'), team_colors.get(bowling_team, 'gray')]
-    
+        colors = [team_colors.get(batting_team, 'gray'), team_colors.get(bowling_team, 'gray')]
+        
 
-    # Set explode effect for the slices
-    explode = [0, 0.1]  # Explode the first slice (Win) by 0.1
+        # Set explode effect for the slices
+        explode = [0, 0.1]  # Explode the first slice (Win) by 0.1
 
 
-        # Create the figure
-    fig = go.Figure()
+            # Create the figure
+        fig = go.Figure()
 
-        # Add trace for outer pie (green)
-    fig.add_trace(go.Pie(labels=labels, values=values, hole=0.5, marker=dict(colors=colors), pull=explode))
+            # Add trace for outer pie (green)
+        fig.add_trace(go.Pie(labels=labels, values=values, hole=0.5, marker=dict(colors=colors), pull=explode))
 
-        # Update layout
-    fig.update_layout(title_text="Probability of Result", showlegend=True)
+            # Update layout
+        st.write("<h3>Probability of Result</h3>", unsafe_allow_html=True)
+        fig.update_layout( showlegend=True)
+        fig.update_layout(width=400, height=400)
+        fig.update_layout(legend=dict(x=1, y=0, orientation='h'))
 
-        # Show the plot
-    st.plotly_chart(fig)
+        run_req = batting_team + " need " + str(runs_left) + " runs in " + str(balls_left - 1) + " balls"
+        crr_text = "Current Run Rate : " + str(crr)
+        rrr_text = "Required Run Rate : " + str(rrr)
+        scorecard = str(score)+ "/" + str(wickets) + " in " + str(overs) + "." + str(balls) + " Overs"
+
+
+        col1, col2 = st.columns(2)
+        with col2:
+            st.write("\n")
+            st.write("<h3>Scorecard</h3>", unsafe_allow_html=True)
+            st.write(scorecard)
+            st.write(run_req)
+            st.write(crr_text)
+            st.write(rrr_text)
+            
+            # Show the plot
+        with col1:
+            st.plotly_chart(fig)
+
+# Call the function to run the Streamlit app
+if __name__ == "__main__":
+    ipl_win_predictor()
+
+#if button:
+    #ipl_win_predictor()
 
