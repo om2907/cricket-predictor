@@ -65,7 +65,7 @@ with col2:
 col4, col5, col6 = st.columns(3)
 
 with col4:
-    overs = st.number_input('Overs completed', value=0,max_value=20, step=1,min_value=0)
+    overs = st.number_input('Overs completed', value=0,max_value=19, step=1,min_value=0)
 
 
 if(overs==20):
