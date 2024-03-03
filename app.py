@@ -145,7 +145,7 @@ def ipl_win_predictor():
         fig.update_layout(width=400, height=400)
         fig.update_layout(legend=dict(x=1, y=0, orientation='h'))
 
-        run_req = batting_team + " need " + str(runs_left) + " runs in " + str(balls_left - 1) + " balls"
+        run_req = batting_team + " need " + str(runs_left) + " runs in " + str(balls_left ) + " balls"
         crr_text = "Current Run Rate : " + str(crr)
         rrr_text = "Required Run Rate : " + str(rrr)
         scorecard = str(score)+ "/" + str(wickets) + " in " + str(overs) + "." + str(balls) + " Overs"
