@@ -92,10 +92,10 @@ with col6:
     
 def ipl_win_predictor():    
         runs_left = target - score
-        balls_left = 121 - ((overs*6) + (balls))
+        balls_left = 120 - ((overs*6) + (balls))
         wickets_left = 10 - wickets
         crr = score/(overs + balls)
-        rrr = (runs_left*6)/(balls_left-1)
+        rrr = (runs_left*6)/(balls_left)
         print(120 - balls_left +1)
         input_df = pd.DataFrame({'Batting_Team': [batting_team], 'Bowling_Team': [bowling_team], 'City': [selected_city],
                                 'runs_left': [runs_left], 'balls_left': [balls_left], 'wickets_left': [wickets_left],
