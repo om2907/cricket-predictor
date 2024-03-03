@@ -96,7 +96,6 @@ def ipl_win_predictor():
         wickets_left = 10 - wickets
         crr = score/(overs + balls)
         rrr = (runs_left*6)/(balls_left)
-        print(120 - balls_left +1)
         input_df = pd.DataFrame({'Batting_Team': [batting_team], 'Bowling_Team': [bowling_team], 'City': [selected_city],
                                 'runs_left': [runs_left], 'balls_left': [balls_left], 'wickets_left': [wickets_left],
                                 'Total_Runs_x': [target], 'crr': [crr], 'rrr': [rrr]})
@@ -111,7 +110,7 @@ def ipl_win_predictor():
 
 
 
-        if(wickets >= 10 or balls_left==1 or rrr>36):
+        if(wickets >= 10 or balls_left==0 or rrr>36):
             win_chart=0
         else:
             win_chart= round(win*100)
