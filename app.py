@@ -136,7 +136,7 @@ def ipl_win_predictor():
         fig = go.Figure()
 
             # Add trace for outer pie (green)
-        fig.add_trace(go.Pie(labels=labels, values=values, hole=0.5, marker=dict(colors=colors), pull=explode))
+        fig.add_trace(go.Pie(labels=labels, values=values, hole=0.5, marker=dict(colors=colors)))
 
             # Update layout
         st.write("<h3>Probability of Result</h3>", unsafe_allow_html=True)
