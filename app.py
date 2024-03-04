@@ -15,6 +15,19 @@ teams = [
     'Lucknow Super Giants'
 ]
 
+short_forms = {
+    'Sunrisers Hyderabad': 'SRH',
+    'Mumbai Indians': 'MI',
+    'Royal Challengers Bangalore': 'RCB',
+    'Kolkata Knight Riders': 'KKR',
+    'Punjab Kings': 'PBKS',
+    'Chennai Super Kings': 'CSK',
+    'Rajasthan Royals': 'RR',
+    'Delhi Capitals': 'DC',
+    'Gujarat Titans': 'GT',
+    'Lucknow Super Giants': 'LSG'
+}
+
 cities = ['Hyderabad', 'Bangalore', 'Mumbai', 'Indore', 'Kolkata', 'Delhi',
           'Chandigarh', 'Jaipur', 'Chennai',
           'Ahmedabad', 'Cuttack', 'Nagpur', 'Dharamsala',
@@ -144,7 +157,7 @@ def ipl_win_predictor():
         fig.update_layout(width=400, height=400)
         fig.update_layout(legend=dict(x=1, y=0, orientation='h'))
 
-        run_req = batting_team + " need " + str(runs_left) + " runs in " + str(balls_left ) + " balls"
+        run_req = short_forms[batting_team] + " need " + str(runs_left) + " runs in " + str(balls_left ) + " balls"
         crr_text = "Current Run Rate : " + str(crr)
         rrr_text = "Required Run Rate : " + str(rrr)
         scorecard = str(score)+ "/" + str(wickets) + " in " + str(overs) + "." + str(balls) + " Overs"
