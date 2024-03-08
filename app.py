@@ -164,7 +164,7 @@ def ipl_win_predictor():
         crr_text = "Current Run Rate : " + str(crr)
         rrr_text = "Required Run Rate : " + str(rrr)
         scorecard = str(score)+ "/" + str(wickets) + " in " + str(overs) + "." + str(balls) + " Overs" 
-        matchup = "<h3>Scorecard</h3>" + "<h3>" + short_forms[batting_team] + " vs " + short_forms[bowling_team] + "</h3>", unsafe_allow_html=True
+        matchup = ("<h3>Scorecard</h3>" + "<h3>" + short_forms[batting_team] + " vs " + short_forms[bowling_team] + "</h3>", unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
         with col2:
