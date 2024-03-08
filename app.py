@@ -93,7 +93,7 @@ else:
     with col5:
         balls = st.selectbox('Balls bowled in current over',sorted(ball))
 tot_balls = ((overs*6) + (balls)) 
-tot_overs_fraction = overs + balls / 6
+tot_overs_fraction = (overs) + (balls / 6)
 with col6:
     wickets = st.number_input('Wickets out', max_value=tot_balls, value=0,min_value=0)
 
