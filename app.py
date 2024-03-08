@@ -92,7 +92,8 @@ elif(overs==0):
 else:
     with col5:
         balls = st.selectbox('Balls bowled in current over',sorted(ball))
-tot_balls = ((overs*6) + (balls))        
+tot_balls = ((overs*6) + (balls)) 
+tot_overs_fraction = overs + balls / 6
 with col6:
     wickets = st.number_input('Wickets out', max_value=tot_balls, value=0,min_value=0)
 
@@ -108,7 +109,7 @@ def ipl_win_predictor():
         runs_left = target - score
         balls_left = 120 - tot_balls
         wickets_left = 10 - wickets
-        crr = score/(overs + balls)
+        crr = score/tot_overs_fraction
         rrr = (runs_left*6)/(balls_left)
         input_df = pd.DataFrame({'Batting_Team': [batting_team], 'Bowling_Team': [bowling_team], 'City': [selected_city],
                                 'runs_left': [runs_left], 'balls_left': [balls_left], 'wickets_left': [wickets_left],
