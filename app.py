@@ -93,7 +93,7 @@ else:
     with col5:
         balls = st.selectbox('Balls bowled in current over',sorted(ball))
 with col6:
-    wickets = st.number_input('Wickets out', max_value=10, value=0,min_value=0)
+    wickets = st.number_input('Wickets out', max_value<=tot_balls, value=0,min_value=0)
 
 
     
@@ -105,7 +105,8 @@ with col6:
     
 def ipl_win_predictor():    
         runs_left = target - score
-        balls_left = 120 - ((overs*6) + (balls))
+        tot_balls = ((overs*6) + (balls))
+        balls_left = 120 - tot_balls
         wickets_left = 10 - wickets
         crr = score/(overs + balls)
         rrr = (runs_left*6)/(balls_left)
